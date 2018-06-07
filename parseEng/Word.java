@@ -1,4 +1,4 @@
-package reference;
+package parseEng;
 
 public class Word implements Comparable<Word>{
 	String wordname; // 단어의 이름, 표제어, 단어 그 자체
