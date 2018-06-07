@@ -1,5 +1,6 @@
 package parseEng;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ public class Article {
 
 	public String title;
 	public String contents;
-	public static Map<String, String> articleMap = new HashMap<String, String>();
+	public static Map<String, ArrayList<Word>> articleMap = new HashMap<String, ArrayList<Word>>();
 		
 	/*// Map 생성
 				Map<String, String> map = new HashMap<String, String>();

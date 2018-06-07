@@ -14,9 +14,12 @@ import java.util.Set;
 
 public class ParseEng {
 	
+	public String title;
 	public WordGame wordgame = new WordGame();
 	public VocaMeaning vm = new VocaMeaning();
+	
 	public static Scanner sc = new Scanner(System.in);
+	
 	// 단어를 필드 값으로 갖는 객체가 있어야 함.
 
 	public void start() {
@@ -35,13 +38,13 @@ public class ParseEng {
 			menuNum = sc.nextInt();
 			
 			if(menuNum == 1) {
-				//System.out.println("제목을 입력하세요.\n>");
-				//article.title = sc.nextLine(); // 스페이스가 아닌 엔터친 부분까지 받을 것
-				Article.articleMap.put("firstArticle", "첫번째기사");
-				Article.articleMap.put("SecondArticle", "두번째기사");	
-				Article.articleMap.put("ThirdArticle", "세번쨰기사");
-				
-				//System.out.println("내용을 입력하세요.");
+				System.out.println("제목을 입력하세요.\n>");
+				this.title = sc.next(); // 스페이스가 아닌 엔터친 부분까지 받을 것
+				Article.articleMap.put("firstArticle", new ArrayList<Word>());
+				Article.articleMap.put("SecondArticle", new ArrayList<Word>());	
+				Article.articleMap.put("ThirdArticle", new ArrayList<Word>());
+//				
+				System.out.println("내용을 입력하세요.");
 				// article.contents = sc.nextLine(); // 스페이스가 아닌 엔터친 부분까지 받을 것, 공백이 있어도 하나의 변수여야 함.
 				trim("JALALABAD, Afghanistan — Eleven members of the Mirza Gul family, 10 of them children, "
 						+ "gathered around an unfamiliar object on the ground outside their home. It was 6 a.m. "
@@ -95,7 +98,7 @@ public class ParseEng {
 		parseEng(contents);
 	}
 	
-	public static ArrayList<Word> wordList = new ArrayList<Word>();
+	// public static ArrayList<Word> wordList = new ArrayList<Word>();
 	public void parseEng(String contents) {
 		String[] split = contents.split(" "); // split 통해서 공백 기준으로 문자열을 구분해 배열에 담음
 		
@@ -120,7 +123,7 @@ public class ParseEng {
 		Set<String> keySet = map.keySet(); // Returns a Set view of the keys contained in this map
 		Iterator<String> keyIterator = keySet.iterator(); // Iterator로 출력
 		
-//		ArrayList<Word> wordList = new ArrayList<Word>(); // Word 클래스 타입의 리스트 wordList 생성
+		ArrayList<Word> wordList = new ArrayList<Word>(); // Word 클래스 타입의 리스트 wordList 생성
 		Word[] word = new Word[map.size()];	//Word 클래스 타입의 배열
 		
 		int i=0; //아래 while문 안 word[i]에 다른값을 불러오기 위해 변수 설정 후 while안에서 카운트 올림 
@@ -146,10 +149,11 @@ public class ParseEng {
 			}
 		});
 		
+		Article.articleMap.put(this.title, wordList);
+		ArrayList<Word> thisWordList = Article.articleMap.get(this.title);
 		
-		
-		for(int j=0; j<wordList.size(); j++) { // 정렬된 wordList를 차례로 출력
-			System.out.println(wordList.get(j).wordname + " : " + wordList.get(j).wordcount );
+		for(int j=0; j<thisWordList.size(); j++) { // 정렬된 wordList를 차례로 출력
+			System.out.println(thisWordList.get(j).wordname + " : " + thisWordList.get(j).wordcount );
 		} 
 		
 		
