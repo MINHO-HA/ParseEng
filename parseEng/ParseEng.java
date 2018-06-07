@@ -1,22 +1,33 @@
 package parseEng;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
-import java.util.*;
+import java.util.Set;
 
-public class ParseEng extends Article {
 
+
+public class ParseEng {
+	public Article article = new Article();
 	public static Scanner sc = new Scanner(System.in);
 	// 단어를 필드 값으로 갖는 객체가 있어야 함.
 
 	public void start() {
+		System.out.println("=============");
+		System.out.println("Welcome");
+		System.out.println("=============");
+		
 		System.out.println("제목을 입력하세요.");
-		title = sc.nextLine(); // 스페이스가 아닌 엔터친 부분까지 받을 것
+		article.title = sc.nextLine(); // 스페이스가 아닌 엔터친 부분까지 받을 것
 
 		System.out.println("내용을 입력하세요.");
-		// contents = sc.nextLine(); // 스페이스가 아닌 엔터친 부분까지 받을 것, 공백이 있어도 하나의 변수여야 함.
-		parseEng("JALALABAD, Afghanistan — Eleven members of the Mirza Gul family, 10 of them children, "
+		// article.contents = sc.nextLine(); // 스페이스가 아닌 엔터친 부분까지 받을 것, 공백이 있어도 하나의 변수여야 함.
+		trim("JALALABAD, Afghanistan — Eleven members of the Mirza Gul family, 10 of them children, "
 				+ "gathered around an unfamiliar object on the ground outside their home. It was 6 a.m. "
 				+ "on April 29, and the night before, the Taliban had fought Afghan soldiers nearby.Two "
 				+ "of the smaller children picked the object up, and 16-year-old Jalil then realized that "
@@ -32,7 +43,9 @@ public class ParseEng extends Article {
 				+ "repair mangled limbs, then sometimes amputated them, after finding they could not be saved.");
 	}
 
-	public void parseEng(String contents) {
+	// Map<String, Integer> map = new HashMap<String, Integer>();
+	
+	public void trim(String contents) {
 		// split 전에 replace
 		// String replacedContents = contents.replace(",", " ");
 		// String replacedContents2 = replacedContents.replace(".", " ");
@@ -45,56 +58,40 @@ public class ParseEng extends Article {
 		contents = contents.replace("—", " ");
 		contents = contents.replace(":", " ");
 
-		for (int i = 0; i < contents.length(); i++) {
+		for (int i = 0; i < contents.length(); i++) { // [Q]
 			contents = contents.replace("  ", " ");
 		}
-
-		// 변경전에 split
-		String[] split = contents.split(" ");
 		
-		for (int i = 0; i < split.length; i++) {
-																			// Lowercase로 변경.(추가기능 : 's 구분을 추후에 삽입) >> 다형이가 작성한 가이드
-			split[i] = split[i].toLowerCase(); 								// String 타입의 Lowercase 매개변수에 스캐너로 입력받을 내용(문장) contents 대입.
-																		 	// 모두 소문자로 만들어 String 타입의 변수 LowerCaseContends에 담음.
-		}																	// 대입된 내용(Lowercase) 매개변수를 내재되어있는 메소드 (toLowerCase)를 이용하여
-																			// 소문자로 만드는 이유는 컴퓨터는 대소문자를 다른문자열로 인식할 가능성이 있기 때문에
-																			// 사전작업으로 소문자로 통일시킴....
-																			// System.out.print(LowercaseContents); //확인차 LowercaseContends 매개변수 프린트아웃해봤고
-																			// 이상없이 소문자로 바뀜..
-
-																			// ..실제 기사 복사해와 실행해보니 문단이 바뀔때는 인식못하는 문제를 발생시킴...
-																			// LowerCase method에서 기사를 가져오면 문단이 인식안되는 문제를 해결하기 위해
-																			// trim method사용을 시도하였지만 문자열a 와 문자열b의 공백(띄어쓰기)은 줄여주지만
-																			// 문자열a안의 공백(띄어쓰기)는 없애주기 못하는 것을 발견..(trim method 사용불가)
-																			// 다른 방법 고안해야됨
-
-		// 만든 배열(split) 리스트에 담기 (이유는? 동일한 문자열 쓰인 횟수 찾는 collections.frequency 함수 쓰기위해서..
-		// Split 배열을 복사할 list 선언
-		List<String> list = new ArrayList<String>();
+		parseEng(contents);
+	}
+	
+	
+	public void parseEng(String contents) {
+		String[] split = contents.split(" "); // split 통해서 공백 기준으로 문자열을 구분해 배열에 담음
 		
-		// 배열을 리스트에 복사
-		for(int i=0;i<split.length;i++) {
-			list.add(split[i]);
+		for (int i = 0; i < split.length; i++) { // [Update] 추가기능 : 's 구분을 추후에 삽입			
+			split[i] = split[i].toLowerCase();   // 모두 소문자로 만들어 String 타입의 변수 LowerCaseContends에 담음.
 		}
 		
-		// Map 생성
-		Map<String, Integer> map = new HashMap<String, Integer>();   //Key값이 단어 , Value값이 단어의 횟수
+		List<String> list = new ArrayList<String>();	// Split 배열을 복사할 list 선언
+		
+		for(int i=0;i<split.length;i++) {	// 배열을 리스트에 복사
+			list.add(split[i]);				// [Update]clone으로 가능? 
+		}
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();   //Map 생성Key값이 단어 , Value값이 단어의 횟수
 
 		// Map에 Array 복사
 		for (int i = 0; i < split.length; i++) {
 			int count = Collections.frequency(list, split[i]); //횟수를 구하는 method
 			map.put(split[i], count);
 		}
-
-		// Iterator로 출력
+		
 		Set<String> keySet = map.keySet(); // Returns a Set view of the keys contained in this map
-		Iterator<String> keyIterator = keySet.iterator();
+		Iterator<String> keyIterator = keySet.iterator(); // Iterator로 출력
 		
-		//Word클래스 타입의 리스트 wordList
-		ArrayList<Word> wordList = new ArrayList<Word>(); //
-		
-		//Word 클래스 타입의 배열
-		Word[] word = new Word[map.size()];
+		ArrayList<Word> wordList = new ArrayList<Word>(); // Word 클래스 타입의 리스트 wordList 생성
+		Word[] word = new Word[map.size()];	//Word 클래스 타입의 배열
 		
 		int i=0; //아래 while문 안 word[i]에 다른값을 불러오기 위해 변수 설정 후 while안에서 카운트 올림 
 		while (keyIterator.hasNext()) {
@@ -105,7 +102,7 @@ public class ParseEng extends Article {
 			i++;
 		}	
 		
-		Collections.sort(wordList, new Comparator<Word>() {
+		Collections.sort(wordList, new Comparator<Word>() { // wordList 인스턴스를 wordcount로 정렬
 			
 			@Override // 왜 오버라이딩을 이렇게 했는가.
 			public int compare(Word word1, Word word2) {
@@ -119,10 +116,11 @@ public class ParseEng extends Article {
 			}
 		});
 		
-		for(int j=0; j<wordList.size(); j++) {
+		article.wordList = wordList;
+		
+		for(int j=0; j<wordList.size(); j++) { // 정렬된 wordList를 차례로 출력
 			System.out.println(wordList.get(j).wordname + " : " + wordList.get(j).wordcount );
 		}
 		
 	}
-		
 }
