@@ -13,7 +13,7 @@ public class VocaMeaning {
 	int i=0;
 	String wordListName = null;
 	
-	void voca() {
+	public void voca() {
 		
 		int j=0;
 		for(int i=0;i<Article.articleMap.size();i++) {
@@ -22,7 +22,7 @@ public class VocaMeaning {
 			while(keyIterator.hasNext()) {
 				j++;
 				String key = keyIterator.next();
-				String value = Article.articleMap.get(key);
+//				ArrayList<Word> thisWordList = Article.articleMap.get(key);
 				System.out.println(j+"번 : "+key);
 			}
 			
@@ -30,24 +30,24 @@ public class VocaMeaning {
 			System.out.println("원하시는 타이틀의 번호를 선택해주세요.\n>");
 			int titleNum = sc.nextInt();
 			
-			if(titleNum == 1) {
-				for (i=0;i<ParseEng.wordList.size();i++) {
-					wordListName = ParseEng.wordList.get(i).wordname;
-					System.out.println(i+1+"번 : "+ ParseEng.wordList.get(i).wordname);
-					}
-					
-					//원하는 단어 번호 선택
-					System.out.println("원하시는 단어의 번호를 선택해주세요.\n>");
-					int wordNum = sc.nextInt();
-					i = wordNum;
-					
-					//단어번호에 해당되는 단어 나오고 단어 뜻입력
-					System.out.println(i+"번 단어 : "+wordListName);
-					System.out.println("해당되는 단어의 뜻을 입력해주세요\n>");
-					Word.meaning = sc.nextLine();
-					
-					ArrayList<Word> wordMeaning = new ArrayList<Word>();
-					
+//			if(titleNum == 1) {
+//				for (i=0;i<ParseEng.wordList.size();i++) {
+//					wordListName = ParseEng.wordList.get(i).wordname;
+//					System.out.println(i+1+"번 : "+ ParseEng.wordList.get(i).wordname);
+//					}
+//					
+//					//원하는 단어 번호 선택
+//					System.out.println("원하시는 단어의 번호를 선택해주세요.\n>");
+//					int wordNum = sc.nextInt();
+//					i = wordNum;
+//					
+//					//단어번호에 해당되는 단어 나오고 단어 뜻입력
+//					System.out.println(i+"번 단어 : "+wordListName);
+//					System.out.println("해당되는 단어의 뜻을 입력해주세요\n>");
+//					Word.meaning = sc.nextLine();
+//					
+//					ArrayList<Word> wordMeaning = new ArrayList<Word>();
+//					
 					
 					
 					
@@ -81,7 +81,7 @@ public class VocaMeaning {
 						String value = map.get(key);
 						System.out.println(key+" : "+value);
 					}*/
-				}	
+//				}	
 		}
 	
 	} 
