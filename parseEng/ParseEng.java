@@ -13,23 +13,17 @@ import java.util.Set;
 
 
 public class ParseEng {
-	
-	public String title;
-	public WordGame wordgame = new WordGame();
-	public VocaMeaning vm = new VocaMeaning();
-	
 	public static Scanner sc = new Scanner(System.in);
 	
-	// 단어를 필드 값으로 갖는 객체가 있어야 함.
+	public String title; // 제목을 입력 값으로 받기 위한 임시 변수 
+	public WordGame wordgame = new WordGame(); // "WordGame" 메뉴를 불러오기 위한 객체 생성
+	public VocaMeaning vocaMeaning = new VocaMeaning();	// "단어 뜻 입력" 메뉴를 불러오기 위한 객체 생성
 
-	public void start() {
+	public void start() { // 시작 메소드
 		System.out.println("=====================================================");
 		System.out.println("                       Welcome");
 		
-		
-		//메뉴 만들기 
-		int menuNum;
-		
+		int menuNum = 0; // 메뉴 선택을 int 값으로 하기 위한 변수
 		do {
 			System.out.println("=====================================================");
 			System.out.println("1. parseEng | 2. WordGame | 3. 단어 뜻 입력 | 4. 프로그램 종료");
@@ -40,10 +34,7 @@ public class ParseEng {
 			if(menuNum == 1) {
 				System.out.println("제목을 입력하세요.\n>");
 				this.title = sc.next(); // 스페이스가 아닌 엔터친 부분까지 받을 것
-				Article.articleMap.put("firstArticle", new ArrayList<Word>());
-				Article.articleMap.put("SecondArticle", new ArrayList<Word>());	
-				Article.articleMap.put("ThirdArticle", new ArrayList<Word>());
-//				
+
 				System.out.println("내용을 입력하세요.");
 				// article.contents = sc.nextLine(); // 스페이스가 아닌 엔터친 부분까지 받을 것, 공백이 있어도 하나의 변수여야 함.
 				trim("JALALABAD, Afghanistan — Eleven members of the Mirza Gul family, 10 of them children, "
@@ -62,82 +53,94 @@ public class ParseEng {
 						+ "repair mangled limbs, then sometimes amputated them, after finding they could not be saved.");
 					
 			} else if (menuNum == 2) {
-				
 				wordgame.wordgame();
 				
 			} else if (menuNum == 3) {
-				
-				vm.voca();
-				
+				vocaMeaning.vocaMeaningInput();
 			}
 		} while(menuNum != 4);
 			System.out.println("**************** 프로그램이 종료되었습니다. ******************");
 			sc.close();
-	}	
-		
+	}
 
-	// Map<String, Integer> map = new HashMap<String, Integer>();
 	
+	/************************************
+	 * 1. 장문으로 입력된 값의 전처리를 담당하는 메소드 *
+	 ************************************/
 	public void trim(String contents) {
-		// split 전에 replace
-		// String replacedContents = contents.replace(",", " ");
-		// String replacedContents2 = replacedContents.replace(".", " ");
-		// String replacedContents3 = replacedContents2.replace("—", " ");
-		// String replacedContents4 = replacedContents3.replace(":", " ");
-		String temp = contents;
-
+		String temp = contents; // 입력 값을 임시로 담아두기 위한 변수
+		
+		// 입력 값에서 ",",".","-","—"인 특수 문자 제거
 		contents = contents.replace(",", " ");
 		contents = contents.replace(".", " ");
 		contents = contents.replace("—", " ");
 		contents = contents.replace(":", " ");
-
-		for (int i = 0; i < contents.length(); i++) { // [Q]
+		
+		// 입력 값에서 연속된 공백 제거(공백은 모두 하나의 공백문자가 됨)
+		for (int i = 0; i < contents.length(); i++) { // [Q] 공백이 없을 때까지의 조건으로 While문 할 수는 없나?
 			contents = contents.replace("  ", " ");
 		}
 		
-		parseEng(contents);
+		parseEng(contents); // 전처리를 한 입력 값의 분석 시작
 	}
+
 	
-	// public static ArrayList<Word> wordList = new ArrayList<Word>();
+	/******************************
+	 * 2. 전처리된 값의 분석을 담당하는 메소드 *
+	 ******************************/
 	public void parseEng(String contents) {
-		String[] split = contents.split(" "); // split 통해서 공백 기준으로 문자열을 구분해 배열에 담음
-		
+		// 1. split 통해서 공백 기준으로 문자열을 구분해 배열에 담음
+		String[] split = contents.split(" "); 
+
+		// 2. 배열의 모든 값을 소문자로 변환 
 		for (int i = 0; i < split.length; i++) { // [Update] 추가기능 : 's 구분을 추후에 삽입			
 			split[i] = split[i].toLowerCase();   // 모두 소문자로 만들어 String 타입의 변수 LowerCaseContends에 담음.
 		}
 		
-		List<String> list = new ArrayList<String>();	// Split 배열을 복사할 list 선언
 		
-		for(int i=0;i<split.length;i++) {	// 배열을 리스트에 복사
+		// 3-1. 공백 기준으로 쪼개어진 문자열을 담은 split 배열을, ArrayList로 복사 하기 위한 변수 선언
+		List<String> list = new ArrayList<String>();	
+
+		// 3-2. split 배열을 ArrayList에 복사
+		for(int i=0;i<split.length;i++) {	
 			list.add(split[i]);				// [Update]clone으로 가능? 
 		}
 		
-		Map<String, Integer> map = new HashMap<String, Integer>();   //Map 생성Key값이 단어 , Value값이 단어의 횟수
+		
+		// 4-1. ArrayList를 HashMap으로 복사하기 위한 변수 선언 (key 값이 단어 , value값이 단어의 횟수)
+		Map<String, Integer> map = new HashMap<String, Integer>();  
 
-		// Map에 Array 복사
+		// 4-2. HashMap에 ArrayList 복사
 		for (int i = 0; i < split.length; i++) {
 			int count = Collections.frequency(list, split[i]); //횟수를 구하는 method
 			map.put(split[i], count);
 		}
 		
+		// 5-1. HashMap의 검색을 위한 iterator 선언
 		Set<String> keySet = map.keySet(); // Returns a Set view of the keys contained in this map
 		Iterator<String> keyIterator = keySet.iterator(); // Iterator로 출력
 		
-		ArrayList<Word> wordList = new ArrayList<Word>(); // Word 클래스 타입의 리스트 wordList 생성
-		Word[] word = new Word[map.size()];	//Word 클래스 타입의 배열
 		
-		int i=0; //아래 while문 안 word[i]에 다른값을 불러오기 위해 변수 설정 후 while안에서 카운트 올림 
+		// 5-2. Word 클래스 타입의 리스트 wordList 생성
+		ArrayList<Word> wordList = new ArrayList<Word>(); 
+		// 5-2.  Word 클래스 타입의 배열
+		Word[] word = new Word[map.size()];	
+		
+		int i=0; //  word 배열의 크기를 key값의 수만큼 지정하기 위한 변수 
+		// 5-4. word[]을 값으로 가지는 wordList를 만들기
 		while (keyIterator.hasNext()) {
-			String key = keyIterator.next();
-			int value = map.get(key);
-			word[i] = new Word(key, value);
-			wordList.add(word[i]);
+			String key = keyIterator.next(); // map의 key는 단어
+			int value = map.get(key); // map의 value는 횟수
+			word[i] = new Word(key, value); // map의 key와 value를, word 클래스의 wordname과 wordCount로 받는 word 배열 생성 
+			wordList.add(word[i]); // 생성된 word 클래스 타입 배열을 wordList의 값으로 만듦
 			i++;
 		}	
 		
-		Collections.sort(wordList, new Comparator<Word>() { // wordList 인스턴스를 wordcount로 정렬
+		
+		// 5-5. wordList인스턴스의 각 값인 word클래스의 wordcount로 정렬
+		Collections.sort(wordList, new Comparator<Word>() { 
 			
-			@Override // 왜 오버라이딩을 이렇게 했는가.
+			@Override // [Update] 왜 오버라이딩을 이렇게 했는가.
 			public int compare(Word word1, Word word2) {
 				if(word1.wordcount > word2.wordcount) {
 					return -1;
@@ -149,14 +152,15 @@ public class ParseEng {
 			}
 		});
 		
+		
+		// 6. 임시로 제목의 입력값을 받아둔 title과 방금 생성한 wordList를 매개로 하여, static변수 articleMap의 하나의 key-value 쌍을 입력
 		Article.articleMap.put(this.title, wordList);
 		ArrayList<Word> thisWordList = Article.articleMap.get(this.title);
 		
-		for(int j=0; j<thisWordList.size(); j++) { // 정렬된 wordList를 차례로 출력
+		 // 7. 5-5에서 정렬된 wordList를 차례로 출력
+		for(int j=0; j<thisWordList.size(); j++) {
 			System.out.println(thisWordList.get(j).wordname + " : " + thisWordList.get(j).wordcount );
 		} 
-		
-		
-		
 	}
+	
 }
