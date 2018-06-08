@@ -20,14 +20,14 @@ public class ParseEng {
 	public VocaMeaning vocaMeaning = new VocaMeaning();	// "단어 뜻 입력" 메뉴를 불러오기 위한 객체 생성
 
 	public void start() { // 시작 메소드
-		System.out.println("=====================================================");
-		System.out.println("                       Welcome");
+		System.out.println("===================================================================");
+		System.out.println("                              Welcome");
 		
 		int menuNum = 0; // 메뉴 선택을 int 값으로 하기 위한 변수
 		do {
-			System.out.println("=====================================================");
-			System.out.println("1. parseEng | 2. WordGame | 3. 단어 뜻 입력 | 4. 프로그램 종료");
-			System.out.println("=====================================================");
+			System.out.println("===================================================================");
+			System.out.println("1. parseEng | 2. WordGame | 3. 단어 뜻 입력 | 4. 단어 리스트  | 5. 프로그램 종료");
+			System.out.println("===================================================================");
 			System.out.println("원하시는 메뉴번호를 입력하세요.\n>");
 			menuNum = sc.nextInt();
 			
@@ -36,29 +36,18 @@ public class ParseEng {
 				this.title = sc.next(); // 스페이스가 아닌 엔터친 부분까지 받을 것
 
 				System.out.println("내용을 입력하세요.");
-				// article.contents = sc.nextLine(); // 스페이스가 아닌 엔터친 부분까지 받을 것, 공백이 있어도 하나의 변수여야 함.
-				trim("JALALABAD, Afghanistan — Eleven members of the Mirza Gul family, 10 of them children, "
-						+ "gathered around an unfamiliar object on the ground outside their home. It was 6 a.m. "
-						+ "on April 29, and the night before, the Taliban had fought Afghan soldiers nearby.Two "
-						+ "of the smaller children picked the object up, and 16-year-old Jalil then realized that "
-						+ "it was dangerous: an unexploded rocket from the battle. He tried to wrest it away from "
-						+ "them, but in the tussle, it fell and exploded.It was a cruel day, even by the standards "
-						+ "of Afghanistan’s long war.By nightfall, four were dead, including Jalil, who had tried "
-						+ "to save them all and died at a hospital that night. One 4-year-old girl, Marwa, lost both "
-						+ "her twin sister, Safwa, and their mother, Brekhna, who had been nearby making dung cakes "
-						+ "for fuel. One of Brekhna’s nieces, a 6-year-old, was also killed in the blast.Seven survivors "
-						+ "— three brothers and four of their first cousins — were left to bear the weight of those "
-						+ "losses, and more: Every one of them lost a leg, and two lost both.Through the next two days, "
-						+ "doctors at the Nangarhar Regional Hospital in Jalalabad worked around the clock trying to "
-						+ "repair mangled limbs, then sometimes amputated them, after finding they could not be saved.");
+				trim(Deadpool.deadpoolScript);
 					
 			} else if (menuNum == 2) {
 				wordgame.wordgame();
 				
 			} else if (menuNum == 3) {
 				vocaMeaning.vocaMeaningInput();
+				
+			} else if (menuNum == 4) {
+				Record.recordOutput();
 			}
-		} while(menuNum != 4);
+		} while(menuNum != 5);
 			System.out.println("**************** 프로그램이 종료되었습니다. ******************");
 			sc.close();
 	}
@@ -70,14 +59,32 @@ public class ParseEng {
 	public void trim(String contents) {
 		String temp = contents; // 입력 값을 임시로 담아두기 위한 변수
 		
-		// 입력 값에서 ",",".","-","—"인 특수 문자 제거
+		// 입력 값에서  특수 문자 제거
 		contents = contents.replace(",", " ");
 		contents = contents.replace(".", " ");
 		contents = contents.replace("—", " ");
 		contents = contents.replace(":", " ");
+		contents = contents.replace(";", " ");
+		contents = contents.replace("–", " ");
+		contents = contents.replace("(", " ");
+		contents = contents.replace(")", " ");
+		contents = contents.replace("-", " ");
+		contents = contents.replace("-", " ");
+		contents = contents.replace("</i", " ");
+		contents = contents.replace("i>", " ");
+		contents = contents.replace(">", " ");
+		contents = contents.replace("<", " ");
+		contents = contents.replace("\r\n", " ");
+		
+		// 숫자 삭제
+		for (int i=0 ; i<10 ; i++) {
+			String num = Integer.toString(i);
+			System.out.println(num);
+			contents = contents.replace(num, " ");	
+		}
 		
 		// 입력 값에서 연속된 공백 제거(공백은 모두 하나의 공백문자가 됨)
-		for (int i = 0; i < contents.length(); i++) { // [Q] 공백이 없을 때까지의 조건으로 While문 할 수는 없나?
+		for (int i = 0; i < 20; i++) { // [Q] 공백이 없을 때까지의 조건으로 While문 할 수는 없나?
 			contents = contents.replace("  ", " ");
 		}
 		
@@ -158,9 +165,11 @@ public class ParseEng {
 		ArrayList<Word> thisWordList = Article.articleMap.get(this.title);
 		
 		 // 7. 5-5에서 정렬된 wordList를 차례로 출력
-		for(int j=0; j<thisWordList.size(); j++) {
-			System.out.println(thisWordList.get(j).wordname + " : " + thisWordList.get(j).wordcount );
+		System.out.println("=== 가장 많이 나온 10가지 단어는? ===");
+		for(int j=0; j<10; j++) { // [Update]
+			System.out.println(j+"위 "+ thisWordList.get(j).wordname + " : " + thisWordList.get(j).wordcount + " 번" );
 		} 
+		System.out.println();
 	}
 	
 }
