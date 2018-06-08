@@ -20,7 +20,7 @@ public class Article {
 	
 	
 	/****************************
-	 * Article의 리스트를 출력하는 메소드*
+	 * Article의 리스트를 출력하는 메소드 *
 	 ****************************/
 	public static void articleList() {
 		NavigableMap<String, ArrayList<Word>> descendingMap = articleMap.descendingMap();
