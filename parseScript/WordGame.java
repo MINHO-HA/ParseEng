@@ -52,6 +52,9 @@ public class WordGame {
 		System.out.println("맞은갯수 : " + correctCount);
 		System.out.println("틀린갯수 : " + wrongCount);
 		
+		// 갯수 초기화
+		correctCount=0;
+		wrongCount=0;
 	}
 	
 	

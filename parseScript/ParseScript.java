@@ -97,7 +97,7 @@ public class ParseScript {
 		}
 		
 		// 입력 값에서 연속된 공백 제거(공백은 모두 하나의 공백문자가 됨)
-		for (int i = 0; i < 20; i++) { // [Q] 공백이 없을 때까지의 조건으로 While문 할 수는 없나?
+		for (int i = 0; i < 20; i++) {
 			contents = contents.replace("  ", " ");
 		}
 		
@@ -123,7 +123,7 @@ public class ParseScript {
 
 		// 3-2. split 배열을 ArrayList에 복사
 		for(int i=0;i<split.length;i++) {	
-			list.add(split[i]);				// [Update]clone으로 가능? 
+			list.add(split[i]);
 		}
 		
 		
