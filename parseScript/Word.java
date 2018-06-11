@@ -1,4 +1,4 @@
-package parseEng;
+package parseScript;
 
 import java.util.ArrayList;
 
@@ -13,6 +13,7 @@ public class Word implements Comparable<Word>{
 		this.wordcount = wordcount;
 	}
 
+	// Comparable 인터페이스 구현(단어 표제어로 정렬할 시 사용)
 	@Override
 	public int compareTo(Word word) {
 		return wordname.compareTo(word.wordname);

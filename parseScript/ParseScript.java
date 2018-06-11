@@ -1,4 +1,4 @@
-package parseEng;
+package parseScript;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +12,7 @@ import java.util.Set;
 
 
 
-public class ParseEng {
+public class ParseScript {
 	public static Scanner sc = new Scanner(System.in);
 	
 	public String title; // 제목을 입력 값으로 받기 위한 임시 변수 
@@ -20,23 +20,32 @@ public class ParseEng {
 	public VocaMeaning vocaMeaning = new VocaMeaning();	// "단어 뜻 입력" 메뉴를 불러오기 위한 객체 생성
 
 	public void start() { // 시작 메소드
-		System.out.println("===================================================================");
-		System.out.println("                              Welcome");
+		System.out.println("=====================================================================");
+		System.out.println("                               Welcome");
 		
 		int menuNum = 0; // 메뉴 선택을 int 값으로 하기 위한 변수
 		do {
-			System.out.println("===================================================================");
-			System.out.println("1. parseEng | 2. WordGame | 3. 단어 뜻 입력 | 4. 단어 리스트  | 5. 프로그램 종료");
-			System.out.println("===================================================================");
+			System.out.println("=====================================================================");
+			System.out.println("1. parseScript | 2. WordGame | 3. 단어 뜻 입력 | 4. 단어 리스트  | 5. 프로그램 종료");
+			System.out.println("=====================================================================");
 			System.out.println("원하시는 메뉴번호를 입력하세요.\n>");
-			menuNum = sc.nextInt();
 			
+			// 입력값 오류를 대비한 예외처리
+			try {
+				menuNum = sc.nextInt();
+			} catch (Exception e) {
+				System.out.println("숫자를 입력해야 합니다. 프로그램을 다시 실행해 주세요");
+				break;
+			}
+			
+			
+			// 메뉴 번호에 따른 메뉴 실행
 			if(menuNum == 1) {
 				System.out.println("제목을 입력하세요.\n>");
-				this.title = sc.next(); // 스페이스가 아닌 엔터친 부분까지 받을 것
+				this.title = sc.next(); // 제목을 입력 받음
 
 				System.out.println("내용을 입력하세요.");
-				trim(Deadpool.deadpoolScript);
+				trim(Script.deadpool); // 내용은 현재 입력을 구현하지 못함.
 					
 			} else if (menuNum == 2) {
 				wordgame.wordgame();
@@ -46,7 +55,8 @@ public class ParseEng {
 				
 			} else if (menuNum == 4) {
 				Record.recordOutput();
-			}
+			} else
+				System.out.println("존재하지 않는 메뉴입니다.");
 		} while(menuNum != 5);
 			System.out.println("**************** 프로그램이 종료되었습니다. ******************");
 			sc.close();
@@ -60,27 +70,30 @@ public class ParseEng {
 		String temp = contents; // 입력 값을 임시로 담아두기 위한 변수
 		
 		// 입력 값에서  특수 문자 제거
-		contents = contents.replace(",", " ");
-		contents = contents.replace(".", " ");
-		contents = contents.replace("—", " ");
-		contents = contents.replace(":", " ");
-		contents = contents.replace(";", " ");
-		contents = contents.replace("–", " ");
-		contents = contents.replace("(", " ");
-		contents = contents.replace(")", " ");
-		contents = contents.replace("-", " ");
-		contents = contents.replace("-", " ");
-		contents = contents.replace("</i", " ");
-		contents = contents.replace("i>", " ");
-		contents = contents.replace(">", " ");
-		contents = contents.replace("<", " ");
-		contents = contents.replace("\r\n", " ");
+		contents = contents.replace(",", "");
+		contents = contents.replace(".", "");
+		contents = contents.replace("—", "");
+		contents = contents.replace(":", "");
+		contents = contents.replace(";", "");
+		contents = contents.replace("–", "");
+		contents = contents.replace("|", "");
+		contents = contents.replace("(", "");
+		contents = contents.replace(")", "");
+		contents = contents.replace("-", "");
+		contents = contents.replace("-", "");
+		contents = contents.replace("\"", "");
+		contents = contents.replace("?", "");
+		contents = contents.replace("!", "");
+		contents = contents.replace("</i", "");
+		contents = contents.replace("i>", "");
+		contents = contents.replace(">", "");
+		contents = contents.replace("<", "");
+		contents = contents.replace("\r\n", "");
 		
 		// 숫자 삭제
 		for (int i=0 ; i<10 ; i++) {
 			String num = Integer.toString(i);
-			System.out.println(num);
-			contents = contents.replace(num, " ");	
+			contents = contents.replace(num, "");	
 		}
 		
 		// 입력 값에서 연속된 공백 제거(공백은 모두 하나의 공백문자가 됨)
@@ -88,14 +101,14 @@ public class ParseEng {
 			contents = contents.replace("  ", " ");
 		}
 		
-		parseEng(contents); // 전처리를 한 입력 값의 분석 시작
+		parseScript(contents); // 전처리를 한 입력 값의 분석 시작
 	}
 
 	
 	/******************************
 	 * 2. 전처리된 값의 분석을 담당하는 메소드 *
 	 ******************************/
-	public void parseEng(String contents) {
+	public void parseScript(String contents) {
 		// 1. split 통해서 공백 기준으로 문자열을 구분해 배열에 담음
 		String[] split = contents.split(" "); 
 
@@ -165,11 +178,10 @@ public class ParseEng {
 		ArrayList<Word> thisWordList = Article.articleMap.get(this.title);
 		
 		 // 7. 5-5에서 정렬된 wordList를 차례로 출력
-		System.out.println("=== 가장 많이 나온 10가지 단어는? ===");
+		System.out.println("=== "+this.title+"에서 가장 많이 나온 10가지 단어는? ===");
 		for(int j=0; j<10; j++) { // [Update]
 			System.out.println(j+"위 "+ thisWordList.get(j).wordname + " : " + thisWordList.get(j).wordcount + " 번" );
 		} 
 		System.out.println();
 	}
-	
 }

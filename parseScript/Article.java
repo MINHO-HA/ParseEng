@@ -1,4 +1,4 @@
-package parseEng;
+package parseScript;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -23,12 +23,15 @@ public class Article {
 	 * Article의 리스트를 출력하는 메소드 *
 	 ****************************/
 	public static void articleList() {
+		// treeMap에서 내림차순으로 정렬
 		NavigableMap<String, ArrayList<Word>> descendingMap = articleMap.descendingMap();
 		Set<Map.Entry<String, ArrayList<Word>>> descendingEntrySet = descendingMap.entrySet();
+		
+		// title 번호를 1번 부터 출력(내림차순)
 		int i=1;
 		System.out.println("======== Aritcle List ========");
 		for(Map.Entry<String, ArrayList<Word>> entry : descendingEntrySet) {
-			System.out.println(i + ". title : " + entry.getKey());
+			System.out.println(i + ". : " + entry.getKey());
 			i++;
 		}
 		System.out.println();

@@ -1,4 +1,4 @@
-package parseEng;
+package parseScript;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,7 +20,7 @@ public class WordGame {
 		Article.articleList();
 		
 		System.out.println("원하시는 title을 입력해주세요.\n>");
-		String choice = ParseEng.sc.next(); // 입력 값을 key 값으로 받기위한 변수
+		String choice = ParseScript.sc.next(); // 입력 값을 key 값으로 받기위한 변수
 		
 		
 		//반복문으로 10문제 만들기
@@ -37,6 +37,7 @@ public class WordGame {
 			//꺼내온 단어로 입력게임시작
 			String inputword = sc.nextLine();
 			
+			// 정오 판별하는 if문
 			if (inputword.equals(words)) {
 				System.out.println("맞았다");
 				correctCount++;
@@ -47,6 +48,7 @@ public class WordGame {
 
 		}
 		
+		// 맞은 갯수와 틀린 갯수 출력
 		System.out.println("맞은갯수 : " + correctCount);
 		System.out.println("틀린갯수 : " + wrongCount);
 		
